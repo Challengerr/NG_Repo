@@ -1,0 +1,45 @@
+<!--
+ - Created by jeziorem on 05.09.2019.
+ -->
+<aura:component controller="NG_SearchImageController" access="global" implements="flexipage:availableForAllPageTypes">
+        <aura:attribute name="emailTo" type="String"/>
+        <aura:attribute name="listToSEnd" type="List" />
+    <aura:attribute name="selectedImages" type="List"/>
+    <aura:attribute name="images" type="List"/>
+        <aura:handler name="init" value="{!this}" action="{!c.init}" />
+        <lightning:card title="Filtered Image Titles">
+            <aura:if isTrue="{!v.selectedImages.length > 0}">
+                    <label><b>Send results via e-mail! Provide your email address: </b></label>
+                    <lightning:input aura:id="definedEmail" label="Email To: " name="emailTo" value="zawisze@gmail.com" type="email"/>
+                    <lightning:button name="sendEmail" label="Send results" class="slds-button slds-is-static slds-text-title_bold" title="Send results" onclick="{!c.handleEmailSend}"/>
+            </aura:if>
+        <div class="search-field">
+            <lightning:input aura:id="nameFilter" label="Filter titles" onchange="{!c.handleNameFilterChange}" />
+        </div>
+        <div class="results">
+            <aura:if isTrue="{!v.images.length > 0}">
+                <p class="has-results">
+                    Showing {!v.images.length} image(s):
+                </p>
+                <ol class="slds-list_dotted">
+                    <aura:iteration items="{!v.images}" var="image">
+                        <li>
+                            <ui:inputCheckbox aura:id="checkbox"
+                                              text="Send via email?"
+                                              label="{!image.Title__c}"
+                                              change="{!c.selectoptionvalue}"/>
+<!--                            <a  onclick="{!c.handleClickImageSearch}" aura:id="myfffimg" data-sfid="{!image.Id} ">-->
+<!--                                <aura:outputText aura:id="myimg" label="{!image.Title__c}"/>-->
+<!--                                {!image.IsEmailOn__c}-->
+<!--                            </a>-->
+                        </li>
+                    </aura:iteration>
+                    <label>{!v.selectedImages.length}</label>
+                </ol>
+                <aura:set attribute="else">
+                    <p class="no-results">Nothing to show.</p>
+                </aura:set>
+            </aura:if>
+        </div>
+        </lightning:card>
+</aura:component>
